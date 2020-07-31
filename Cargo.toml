@@ -1,14 +1,13 @@
 [package]
-name = "e07_sample_bot_structure"
+name = "faris-bot"
 version = "0.1.0"
-authors = ["my name <my@email.address>"]
+authors = [
+    "Julian Gu <j.gush99@gmail.com>"
+]
 edition = "2018"
 
 [dependencies]
 env_logger = "0.6"
 kankyo = "0.2"
 log = "0.4"
-
-[dependencies.serenity]
-features = ["cache", "framework", "standard_framework", "rustls_backend"]
-path = "../../"
+serenity = "0.8"
