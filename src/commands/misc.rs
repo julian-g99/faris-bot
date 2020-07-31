@@ -7,23 +7,8 @@ use serenity::framework::standard::{
 
 #[command]
 pub fn delete(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
-    // checking permission
-    match msg.member(&ctx.cache) {
-        None => {
-            send_msg!("Failed to get author",msg, ctx);
-            return Ok(());
-        },
-        Some(user) => {
-            if !user.permissions(&ctx.cache)?.manage_messages() {
-                send_msg!("You must have manage messages permission to use this command", msg, ctx);
-                return Ok(());
-            }
-        }
-    }
-
-
     if args.remaining() != 1 || args.is_empty() {
-        send_msg!("Invalid number of arguments. Should have exactly one integeer argument for number of messages to delete", msg, ctx);
+        let _ = msg.channel_id.say(&ctx.http, "Invalid number of arguments. Should have exactly one integer argument for the number of messages to delete");
         Ok(())
     } else {
         let count = match args.single::<u64>() {
@@ -31,16 +16,19 @@ pub fn delete(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult
             Err(e) => {
                 match e {
                     ArgError::Parse(_e) => {
-                        send_msg!("Failed to parse argument. Make sure to specify an integer for number of messages to delete", msg, ctx);
+                        let _ = msg.channel_id.say(&ctx.http, "Failed to parse argument. Make sure to specify an integer for number of messsages to delete.");
                         return Ok(());
                     },
                     _ => {
-                        send_msg!("Unknown error", msg, ctx);
+                        let _ = msg.channel_id.say(&ctx.http, "Unknown error.");
                         return Ok(());
                     }
                 }
             }
         };
+        //let messages: Vec<MessageId> = msg.channel_id.messages(&ctx.http, |retriever| {
+            //retriever.before(msg.id).limit(count)
+        //})?.into_iter().map(|m| m.id).collect();
         let messages: Vec<Message> = msg.channel_id.messages(&ctx.http, |retriever| {
             retriever.before(msg.id).limit(count)
         })?;
