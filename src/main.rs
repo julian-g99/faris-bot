@@ -30,6 +30,7 @@ use commands::{
     math::*,
     meta::*,
     owner::*,
+    moderator::*
 };
 struct ShardManagerContainer;
 
@@ -50,7 +51,7 @@ impl EventHandler for Handler {
 }
 
 #[group]
-#[commands(multiply, ping, quit)]
+#[commands(multiply, ping, quit, delete)]
 struct General;
 
 fn main() {
